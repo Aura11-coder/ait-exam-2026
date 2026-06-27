@@ -9,7 +9,7 @@
 'use strict';
 
 const AIT_CONFIG = {
-  SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbxkao1mQPezK_qWQzB9MN2xj1Lkfw8SA9bDfe9JNpHiwdEMzUhznTFn95EEg1Qo3XSumA/exec',
+  SCRIPT_URL: 'https://script.google.com/macros/library/d/1ZAbo6GuJ0quDIz3UkDQH01Qi1y7Q8_7CB8RCvc7LJyLwFYj6XLK_WGds/4',
 
   EXAM_DURATION_MINUTES: 90,
   TOTAL_QUESTIONS: 50,
