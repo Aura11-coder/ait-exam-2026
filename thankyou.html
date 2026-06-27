@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Exam Submitted | Aura Institute & Technology</title>
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="bg-particles" id="bgParticles"></div>
+
+<div class="thankyou-wrap">
+  <div class="thankyou-card">
+
+    <!-- Success Animation -->
+    <div style="position:relative; display:inline-block; margin-bottom:8px;">
+      <div class="success-animation">✅</div>
+      <div class="confetti-ring"></div>
+    </div>
+
+    <img src="assets/logo.png" alt="Aura Institute Logo" class="thankyou-logo" loading="eager" />
+
+    <h1 class="thankyou-title">Exam Submitted!</h1>
+    <p class="thankyou-subtitle">
+      Your answers have been recorded successfully.<br/>
+      Results will be announced by <strong style="color:var(--gold);">Aura Institute & Technology</strong>.
+    </p>
+
+    <!-- Info Box -->
+    <div class="info-box">
+      <div class="info-row">
+        <span>📌</span>
+        <div>
+          <strong>Candidate:</strong>
+          <span id="candidateNameDisplay"> — </span>
+        </div>
+      </div>
+      <div class="info-row">
+        <span>📧</span>
+        <div>
+          <strong>Email:</strong>
+          <span id="candidateEmailDisplay"> — </span>
+        </div>
+      </div>
+      <div class="info-row">
+        <span>📚</span>
+        <div>
+          <strong>Course Applied:</strong>
+          <span id="candidateCourseDisplay"> — </span>
+        </div>
+      </div>
+      <div class="info-row">
+        <span>📅</span>
+        <div>
+          <strong>Submitted On:</strong>
+          <span id="submittedTimeDisplay"> — </span>
+        </div>
+      </div>
+      <div class="info-row">
+        <span>🏆</span>
+        <div>
+          Results will be announced via email and on <strong>www.aurainstitute.co.in</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result Notice -->
+    <div style="background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.25); border-radius:12px; padding:16px; margin-bottom:20px; font-size:0.85rem; color:rgba(255,255,255,0.75); line-height:1.7; text-align:left;">
+      <strong style="color:var(--gold);">📢 Important Notice:</strong><br/>
+      Your exam result is being evaluated. Scholarship decisions will be communicated via your registered email address. Please check your inbox (and spam folder) regularly.
+    </div>
+
+    <!-- Contact Links -->
+    <div class="contact-links">
+      <a href="https://www.aurainstitute.co.in" target="_blank" rel="noopener" class="contact-link">
+        🌐 Visit www.aurainstitute.co.in
+      </a>
+      <a href="mailto:info@aurainstitute.co.in" class="contact-link">
+        📧 info@aurainstitute.co.in
+      </a>
+    </div>
+
+    <p style="font-size:0.75rem; color:rgba(255,255,255,0.35); margin-top:24px; text-align:center;">
+      AIT Career Exam 2026 &nbsp;|&nbsp; Aura Institute & Technology &nbsp;|&nbsp; All Rights Reserved
+    </p>
+
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+  // Populate candidate details
+  document.addEventListener('DOMContentLoaded', () => {
+    const candidate = aitRead(AIT_CONFIG.SESSION_KEYS.CANDIDATE);
+
+    if (candidate) {
+      const nameEl = document.getElementById('candidateNameDisplay');
+      const emailEl = document.getElementById('candidateEmailDisplay');
+      const courseEl = document.getElementById('candidateCourseDisplay');
+      if (nameEl) nameEl.textContent = candidate.name || '—';
+      if (emailEl) emailEl.textContent = candidate.email || '—';
+      if (courseEl) courseEl.textContent = candidate.course || '—';
+    }
+
+    const timeEl = document.getElementById('submittedTimeDisplay');
+    if (timeEl) {
+      timeEl.textContent = new Date().toLocaleString('en-IN', {
+        day: 'numeric', month: 'long', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      });
+    }
+
+    // Particles
+    const container = document.getElementById('bgParticles');
+    if (container) {
+      for (let i = 0; i < 10; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = Math.random() * 100 + 40;
+        p.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;background:radial-gradient(circle,rgba(201,168,76,0.1),transparent);animation-duration:${Math.random()*25+20}s;animation-delay:-${Math.random()*15}s;`;
+        container.appendChild(p);
+      }
+    }
+
+    // Clear session after showing
+    setTimeout(() => {
+      aitClearSession();
+    }, 3000);
+  });
+</script>
+</body>
+</html>

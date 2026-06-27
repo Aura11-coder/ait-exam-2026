@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>AIT Career Exam 2026 | Aura Institute & Technology</title>
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- Fullscreen Prompt (initial) -->
+<div class="fullscreen-prompt" id="fullscreenPrompt">
+  <img src="assets/logo.png" alt="Aura Logo" style="height:80px; filter:drop-shadow(0 4px 16px rgba(139,26,26,0.7));" />
+  <h2 style="font-family:'Playfair Display',serif; font-size:1.8rem; color:white;">Ready to Begin?</h2>
+  <p style="color:rgba(255,255,255,0.65); max-width:400px; line-height:1.7;">
+    The exam will run in <strong style="color:#c9a84c;">fullscreen mode</strong>. Do not exit fullscreen, switch tabs, or use keyboard shortcuts. Violations will be logged.
+  </p>
+  <button class="btn-primary" onclick="enterFullscreen()" style="margin-top:8px;">
+    🖥️ Enter Fullscreen & Start
+  </button>
+  <p style="font-size:0.75rem; color:rgba(255,255,255,0.4); margin-top:12px;">
+    By starting, you agree to the examination rules.
+  </p>
+</div>
+
+<!-- Fullscreen Re-entry Prompt (inline) -->
+<div class="fullscreen-prompt hidden" id="fullscreenPromptInline" style="z-index:4000;">
+  <span style="font-size:3rem;">⚠️</span>
+  <h2 style="font-family:'Playfair Display',serif; font-size:1.6rem; color:white;">Fullscreen Exited!</h2>
+  <p style="color:rgba(255,255,255,0.65); max-width:380px; line-height:1.7;">
+    You have exited fullscreen mode. Please return to fullscreen to continue your exam. This has been logged.
+  </p>
+  <button class="btn-primary" onclick="reenterFullscreen()">
+    🖥️ Return to Fullscreen
+  </button>
+</div>
+
+<!-- Warning Toast -->
+<div class="warning-toast" id="warningToast" role="alert" aria-live="assertive"></div>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar" role="navigation">
+  <a class="nav-brand" href="#" onclick="return false;" aria-label="Aura Institute">
+    <img src="assets/logo.png" alt="Logo" class="nav-logo" />
+    <div class="nav-brand-text">
+      <span class="nav-brand-name">Aura Institute & Technology</span>
+      <span class="nav-brand-sub">AIT Career Exam 2026</span>
+    </div>
+  </a>
+  <div id="timerDisplay" class="timer-display" role="timer" aria-label="Exam time remaining">
+    <span class="timer-icon">⏱️</span>
+    <span class="timer-value" id="timerValue">90:00</span>
+  </div>
+</nav>
+
+<!-- Exam Layout -->
+<main class="exam-layout" id="examLayout" role="main">
+
+  <!-- Main Column -->
+  <div class="exam-main">
+
+    <!-- Candidate Info Bar -->
+    <div class="exam-header-bar">
+      <div class="exam-user-info">
+        <div class="user-avatar" id="candidateAvatar">?</div>
+        <div>
+          <div class="user-name" id="candidateName">Loading...</div>
+          <div class="user-email" id="candidateEmail"></div>
+        </div>
+      </div>
+      <div style="font-size:0.78rem; color:rgba(255,255,255,0.5);">
+        📋 <span id="questionSubject">General</span>
+      </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-wrap">
+      <div class="progress-stats">
+        <span class="progress-label">Exam Progress</span>
+        <span class="progress-count" id="progressLabel">0 / 50 Answered</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- Question Card -->
+    <div class="question-card" id="questionCard" role="region" aria-label="Current question">
+      <div class="question-meta">
+        <div>
+          <div class="question-number" id="questionNumber">Question 1 of 50</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div class="question-marks">⭐ 1 Mark</div>
+          <button
+            class="mark-review-btn"
+            id="markReviewBtn"
+            onclick="toggleMarkReview()"
+            aria-label="Mark for review"
+            aria-pressed="false"
+          >🔖 Mark for Review</button>
+        </div>
+      </div>
+
+      <div class="question-text" id="questionText" aria-live="polite">
+        Loading question...
+      </div>
+
+      <div class="options-list" id="optionsList" role="radiogroup" aria-label="Answer options">
+        <!-- Options rendered by JS -->
+      </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="exam-nav">
+      <button
+        class="exam-nav-btn btn-prev"
+        id="prevBtn"
+        onclick="prevQuestion()"
+        aria-label="Previous question"
+        disabled
+      >← Previous</button>
+
+      <button
+        class="exam-nav-btn btn-submit-exam"
+        id="submitExamBtn"
+        onclick="confirmSubmit()"
+        style="display:none;"
+        aria-label="Submit exam"
+      >✅ Submit Exam</button>
+
+      <button
+        class="exam-nav-btn btn-next"
+        id="nextBtn"
+        onclick="nextQuestion()"
+        aria-label="Next question"
+      >Next →</button>
+    </div>
+
+  </div><!-- end exam-main -->
+
+  <!-- Sidebar -->
+  <aside class="exam-sidebar" role="complementary" aria-label="Exam sidebar">
+
+    <!-- Quick Submit -->
+    <button
+      class="btn-primary"
+      style="width:100%; justify-content:center; padding:14px; border-radius:12px;"
+      onclick="confirmSubmit()"
+      aria-label="Submit exam"
+    >✅ Submit Exam</button>
+
+    <!-- Summary -->
+    <div class="summary-card" role="region" aria-label="Answer summary">
+      <div class="summary-row">
+        <span class="summary-key">Total Questions</span>
+        <span class="summary-val" id="summaryTotal">50</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-key">Answered</span>
+        <span class="summary-val green" id="summaryAnswered">0</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-key">Not Answered</span>
+        <span class="summary-val yellow" id="summaryNotAnswered">50</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-key">Marked for Review</span>
+        <span class="summary-val yellow" id="summaryMarked">0</span>
+      </div>
+    </div>
+
+    <!-- Palette -->
+    <div class="palette-card" role="region" aria-label="Question palette">
+      <div class="palette-title">Question Palette</div>
+
+      <div class="palette-legend">
+        <div class="legend-item"><div class="legend-dot answered"></div>Answered</div>
+        <div class="legend-item"><div class="legend-dot not-answered"></div>Not Answered</div>
+        <div class="legend-item"><div class="legend-dot current"></div>Current</div>
+        <div class="legend-item"><div class="legend-dot marked"></div>Marked</div>
+      </div>
+
+      <div class="palette-grid" id="paletteGrid" role="list" aria-label="Question navigation grid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+  </aside>
+</main>
+
+<!-- Submit Confirmation Modal -->
+<div class="modal-overlay" id="submitConfirmModal" role="dialog" aria-modal="true" aria-labelledby="submitModalTitle">
+  <div class="modal-box">
+    <span class="modal-icon">📋</span>
+    <h3 class="modal-title" id="submitModalTitle">Confirm Submission</h3>
+    <p class="modal-body">
+      You have answered <strong style="color:white;" id="modalAnswered">0</strong> questions.<br/>
+      <strong style="color:#f59e0b;" id="modalSkipped">0</strong> questions are unanswered.<br/><br/>
+      Once submitted, you <strong style="color:white;">cannot</strong> change your answers. Are you sure?
+    </p>
+    <div class="modal-actions">
+      <button class="modal-btn modal-btn-secondary" onclick="cancelSubmit()">Review Answers</button>
+      <button class="modal-btn modal-btn-primary" onclick="doSubmit()">Submit Now</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/timer.js"></script>
+<script src="js/security.js"></script>
+<script src="js/questions.js"></script>
+<script src="js/exam.js"></script>
+</body>
+</html>
